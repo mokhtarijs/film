@@ -1,0 +1,178 @@
+<html>
+
+<head>
+	<meta charset=utf-8>
+	<meta name=viewport content="width=device-width, initial-scale=1">
+
+	<style>
+		body {
+			background-color: #cccccc;
+		}
+	</style>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+
+
+
+<body>
+	<center>
+		<button class="btn" onclick=div1()>Search</button>
+		<button class="btn" onclick=div2()>Movise</button>
+		<button class="btn" onclick=div3()>Signup</button>
+
+
+
+
+		<div id=div1>
+			<h1>Enter Your Doc</h1>
+			<div id=div11>
+				<input type="text" id="partname1" placeholder="Plase Enter Partname"><br>
+				<input type="text" id="downyear1" placeholder="Plase Enter Downyear"><br>
+				<input type="text" id="upyear1" placeholder="Plase Enter Upyear"><br>
+				<input type="text" id="downrate1" placeholder="Plase Enter Downrate"><br>
+				<input type="text" id="uprate1" placeholder="Plase Enter Uprate"><br>
+				<input type="text" id="minviewers1" placeholder="Plase Enter MinViewers" value=0><br>
+				<button class="btn" onclick=search()>Search</button>
+			</div>
+			<br>
+		</div>
+
+
+
+
+		<div id=div2>
+			<h1>Enter Your Doc</h1>
+			<div id=div21>
+				<input type="text" id="filmtitle2" placeholder="Plase Enter Filmtitle"><br>
+				<input type="text" id="year2" placeholder="Plase Enter Year"><br>
+				<input type="text" id="user2" placeholder="Plase Enter User"><br>
+				<input type="text" id="pass2" placeholder="Plase Enter Pass"><br>
+				<input type="text" id="company2" placeholder="Plase Enter Company"><br>
+				<input type="text" id="dirctors2" placeholder="Plase Enter Dirctors"><br>
+				<input type="text" id="actors2" placeholder="Plase Enter Actors"><br>
+				<button class="btn" onclick="movise()">Save movise</button>
+			</div>
+		</div>
+
+
+
+
+		<div id=div3>
+			<h1>Enter Your Doc</h1>
+			<div id=div31>
+				<input type="text" id="user3" placeholder="Plase Enter User"><br>
+				<input type="text" id="pass3" placeholder="Plase Enter Pass"><br>
+				<input type="text" id="phone3" placeholder="Plase Enter Phone"><br>
+				<button class="btn" onclick="signup()">Signup</button>
+			</div>
+		</div>
+
+
+
+
+		<script>
+			$("#div3").hide();
+			$("#div2").hide();
+			$("#div1").hide();
+			function div1() {
+				$("#div2").hide();
+				$("#div3").hide();
+				$("#div1").show();
+			}
+			function div2() {
+				$("#div1").hide();
+				$("#div3").hide();
+				$("#div2").show();
+			}
+			function div3() {
+				$("#div1").hide();
+				$("#div2").hide();
+				$("#div3").show();
+			}
+
+
+
+
+
+			function search() {
+				var data = JSON.stringify({
+					minviewers: $("#minviewers1")[0].value,
+					partname: $("#partname1")[0].value,
+					downyear: $("#downyear1")[0].value,
+					upyear: $("#upyear1")[0].value,
+					downrate: $("#downrate1")[0].value,
+					uprate: $("#uprate1")[0].value
+				})
+				var url = "http://localhost:81/Movies"
+
+				$.post(url, data)
+					.done(function (res) {
+						console.log(res);
+						for (let index = 0; index < res.length; index++) {
+							var a = document.createElement("A");
+							a.innerHTML = "filmtitle:" + res[index].filmtitle + ",,,,,year:" + res[index].year + ",,,,,rate:" + res[index].rate;
+							a.href = "http://localhost:81/Movies?id=" + res[index].id;
+							document.body.appendChild(a);
+							document.body.appendChild(document.createElement("BR"));
+						}
+					})
+					.fail(function (erorr) {
+						alert("error");
+					})
+			}
+
+
+
+
+
+			function movise() {
+				var data = JSON.stringify({
+					filmtitle: $("#filmtitle2")[0].value,
+					year: $("#year2")[0].value,
+					user: $("#user2")[0].value,
+					pass: $("#pass2")[0].value,
+					company: $("#company2")[0].value,
+					dirctors: $("#dirctors2")[0].value,
+					actors: $("#actors2")[0].value
+				})
+				var url = "http://localhost:81/Movise"
+
+				$.post(url, data)
+					.done(function (res) {
+						console.log(res);
+
+					})
+					.fail(function (erorr) {
+						alert("error");
+					})
+			}
+
+
+
+
+
+			function signup() {
+				var data = JSON.stringify({
+					user: $("#user3")[0].value,
+					pass: $("#pass3")[0].value,
+					phone: $("#phone3")[0].value
+				})
+				var url = "http://localhost:81/Signup"
+				console.log(data);
+				$.post(url, data)
+					.done(function (res) {
+						console.log(res);
+
+					})
+					.fail(function (erorr) {
+						alert("error");
+					})
+			}
+
+
+
+		</script>
+	</center>
+</body>
+
+</html>
